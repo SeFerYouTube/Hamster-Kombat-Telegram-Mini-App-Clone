@@ -45,6 +45,18 @@ const App: React.FC = () => {
   const [dailyCipherTimeLeft, setDailyCipherTimeLeft] = useState("");
   const [dailyComboTimeLeft, setDailyComboTimeLeft] = useState("");
 
+  const [userId, setUserId] = useState<number | null>(null);
+
+  useEffect(() => {
+    // Проверяем наличие объекта Telegram
+    const tg = window.Telegram.WebApp;
+
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+      const id = tg.initDataUnsafe.user.id;
+      setUserId(id);  // Устанавливаем user.id в состояние
+    }
+  }, []);
+
   const calculateTimeLeft = (targetHour: number) => {
     const now = new Date();
     const target = new Date(now);
@@ -209,6 +221,8 @@ const App: React.FC = () => {
                 onClick={handleCardClick}
               >
                 <div className="w-full h-full rounded-full circle-inner">
+                <p>{userId ? `User ID: ${userId}` : 'Loading user...'}</p> {/* Здесь отображается user.id */}
+      
                   <img src={mainCharacter} alt="Main Character" className="w-full h-full" />
                 </div>
               </div>
